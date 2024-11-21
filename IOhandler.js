@@ -229,6 +229,48 @@ const cool = (pathIn, pathOut) => {
   });
 };
 
+/**
+ * Description: Read in png file by given pathIn,
+ * convert to Sepia and write to given pathOut
+ *
+ * @param {string} filePath
+ * @param {string} pathProcessed
+ * @return {promise}
+ */
+const sepia = (pathIn, pathOut) => {
+  return new Promise((resolve, reject) => {
+    try {
+      fs.createReadStream(pathIn)
+        .pipe(new PNG())
+        .on("parsed", function () {
+          // Loop through
+          for (let i = 0; i < this.data.length; i += 4) {
+            const r = this.data[i];     // Red
+            const g = this.data[i + 1]; // Green
+            const b = this.data[i + 2]; // Blue
+
+            const coolB = Math.min((.272 * r) + (.534 * g) + (.131 * (b)), 255.0); // Boost blue
+            const coolG = Math.min((.349 * r) + (.686 * g) + (.168 * (b)), 255.0); // Slightly boost green
+            const coolR = Math.min((.393 * r) + (.769 * g) + (.189 * (b)), 255.0); // reduce red
+
+           // Apply new values
+           this.data[i] = coolR;
+           this.data[i + 1] = coolG;
+           this.data[i + 2] = coolB;
+            // Alpha channel (i + 3) not needed
+          }
+
+          // Write the modified PNG data to pathOut
+          this.pack().pipe(fs.createWriteStream(pathOut)).on("finish", resolve);
+        })
+        .on("error", reject); // Handle any errors during the parsing process
+    } catch (error) {
+      console.error("Error in grayscale processing:", error);
+      reject(error);
+    }
+  });
+};
+
 
 
 module.exports = {
@@ -238,6 +280,7 @@ module.exports = {
   redRemove,
   warm,
   cool,
+  sepia,
 };
 
 

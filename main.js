@@ -6,6 +6,7 @@ const pathUnzipped = path.join(__dirname, "unzipped");
 const pathProcessedGS = path.join(__dirname, "grayscaled");
 const pathProcessedW = path.join(__dirname, "Warm Filtered");
 const pathProcessedC = path.join(__dirname, "Cool Filtered");
+const pathProcessedS = path.join(__dirname, "Sepia Filtered");
 
 const extractAndProcessPngs = async () => {
     try {
@@ -17,6 +18,7 @@ const extractAndProcessPngs = async () => {
       await fs.promises.mkdir(pathProcessedGS, { recursive: true });
       await fs.promises.mkdir(pathProcessedW, { recursive: true });
       await fs.promises.mkdir(pathProcessedC, { recursive: true });
+      await fs.promises.mkdir(pathProcessedS, { recursive: true });
   
       for (const filePath of pngFiles) {
         const fileName = path.basename(filePath); // Extract file name
@@ -24,9 +26,11 @@ const extractAndProcessPngs = async () => {
         await IOhandler.grayScale(filePath, path.join(pathProcessedGS, fileName)); // Process and save
         await IOhandler.warm(filePath, path.join(pathProcessedW, fileName)); // Process and save
         await IOhandler.cool(filePath, path.join(pathProcessedC, fileName)); // Process and save
+        await IOhandler.sepia(filePath, path.join(pathProcessedS, fileName));
         console.log(`Processed: ${filePath} -> ${pathProcessedGS}`);
         console.log(`Processed: ${filePath} -> ${pathProcessedW}`);
         console.log(`Processed: ${filePath} -> ${pathProcessedC}`);
+        console.log(`Processed: ${filePath} -> ${pathProcessedS}`);
       }
   
       console.log("All PNG files have been processed and saved in:", pathProcessedGS);
