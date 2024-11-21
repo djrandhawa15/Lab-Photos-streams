@@ -249,14 +249,14 @@ const sepia = (pathIn, pathOut) => {
             const g = this.data[i + 1]; // Green
             const b = this.data[i + 2]; // Blue
 
-            const coolB = Math.min((.272 * r) + (.534 * g) + (.131 * (b)), 255.0); // Boost blue
-            const coolG = Math.min((.349 * r) + (.686 * g) + (.168 * (b)), 255.0); // Slightly boost green
-            const coolR = Math.min((.393 * r) + (.769 * g) + (.189 * (b)), 255.0); // reduce red
+            const sepiaB = Math.min((.272 * r) + (.534 * g) + (.131 * (b)), 255.0); // Boost blue
+            const sepiaG = Math.min((.349 * r) + (.686 * g) + (.168 * (b)), 255.0); // Slightly boost green
+            const sepiaR = Math.min((.393 * r) + (.769 * g) + (.189 * (b)), 255.0); // reduce red
 
            // Apply new values
-           this.data[i] = coolR;
-           this.data[i + 1] = coolG;
-           this.data[i + 2] = coolB;
+           this.data[i] = sepiaR;
+           this.data[i + 1] = sepiaG;
+           this.data[i + 2] = sepiaB;
             // Alpha channel (i + 3) not needed
           }
 
